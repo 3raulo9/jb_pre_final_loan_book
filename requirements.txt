@@ -8,3 +8,4 @@ Pillow==9.3.0
 pycparser==2.21
 sqlparse==0.4.4
 tzdata==2023.3
+Faker==15.3
