@@ -2,7 +2,7 @@
 
 /* Global styles */
 body {
-    background-color: #008080; /* Teal background */
+    background-color: #97d9d9; /* Teal background */
     font-family: 'Tahoma', sans-serif; /* Windows XP-like font */
 }
 
@@ -16,6 +16,7 @@ body {
     font-weight: bold;
     color: #fff; /* White text */
     text-shadow: 2px 2px #000; /* Text shadow */
+    animation: heartbeat 7s infinite; /* Heartbeat animation for navbar brand */
 }
 
 .navbar-toggler-icon {
@@ -37,7 +38,7 @@ body {
     width: 300px;
     background-color: #fff; /* White input background */
     border: 1px solid #ccc; /* Gray border */
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 /* Animation for floating book */
@@ -53,9 +54,6 @@ body {
     }
 }
 
-.floating-book {
-    animation: float 3s ease-in-out infinite;
-}
 
 /* Additional styling for special buttons */
 .special-button {
@@ -79,17 +77,9 @@ body {
     border-color: #0080ff;
 }
 
-/* Heartbeat and shake animation for navbar brand */
+/* Heartbeat animation for navbar brand */
 @keyframes heartbeat {
     0%, 100% { transform: scale(0.7); }
     
     50% { transform: scale(1); }
-}
-
-.navbar-brand {
-    font-size: 28px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 2px 2px #000;
-    animation: heartbeat 7s infinite; /* Apply both animations */
 }

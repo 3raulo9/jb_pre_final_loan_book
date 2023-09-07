@@ -27,19 +27,21 @@ class Author(models.Model):
 
 # Ebook model to store information about ebooks
 class Ebook(models.Model):
-
-    name = models.CharField(max_length=64)  # Ebook's name
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)  # Foreign key to Author model
-    year_published = models.CharField(max_length=64)  # Year the ebook was published
-    loan_type = models.IntegerField(default=1,  # Type of loan for the ebook (default 1)
-                                    validators=[
-                                        MaxValueValidator(3),
-                                        MinValueValidator(1)
-                                    ])
-    ebook_content = models.CharField(max_length=2560)  # Content of the ebook
+    name = models.CharField(max_length=64)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    year_published = models.IntegerField()  # Store year as an integer
+    loan_type = models.IntegerField(
+        default=1,
+        validators=[
+            MaxValueValidator(3),
+            MinValueValidator(1)
+        ]
+    )
+    ebook_content = models.CharField(max_length=2560)
 
     def __str__(self):
         return self.name
+
 
 
 # Loan model to track ebook loans

@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+
+{% block body_block %}
+<div class="jumbotron book-display">
+    <p><h1 class="fw-bolder mb-1">{{ book_info.name }}</h1></p>
+    <!-- Display book name with bold font -->
+    
+    <p><h5 class="text-secondary">by {{ book_info.author }}</h5></p>
+    <!-- Display author name with a smaller, secondary text style -->
+
+    <p class="text-secondary">published: {{ book_info.year_published }}</p>
+    <!-- Display publication year with secondary text style -->
+
+
+    {% if user.is_authenticated %}
+        <!-- Check if the user is authenticated (logged in) -->
+        <p>
+            <a class="navbar-link btn btn-danger" href="" role="button">Save</a>
+            <!-- Display a "Save" button for authenticated users -->
+
+            {% if book_info.loan_type == 3 %}
+                <!-- Check the book's loan type -->
+                The book can be saved for, and up to 2 days
+            {% elif book_info.loan_type == 2 %}
+                The book can be saved for, and up to 5 days
+            {% else %}
+                The book can be saved for, and up to 10 days
+            {% endif %}
+            <!-- Display the loan duration based on the book's loan type -->
+        </p>
+    {% endif %}
+    <br>
+
+    <div style="max-width: 1000px;">
+        {{ book_info.ebook_content }}
+        <!-- Display the ebook content within a container with a max width of 1000px -->
+    </div>
+</div>
+
+{% endblock %}

@@ -1,4 +1,5 @@
 # Import necessary modules from Django
+from random import randint
 from django.shortcuts import render
 from base.forms import UserForm, UserProfileInfoForm
 from base.models import Author, Ebook, Loan, Review
@@ -6,6 +7,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+import random
+from django.shortcuts import render, redirect
+from django.http import Http404
+from base.models import Ebook
+
+
+
 
 # Define the 'index' view function
 @login_required
@@ -96,16 +104,47 @@ def display_books(request):
     return render(request, 'base/ebooks.html', context=books_dict)
 
 # Define the 'display_authors' view function
-def display_authors(request):
-    # Get a list of authors ordered by 'name'
-    author_list = Author.objects.order_by('name')
-    authors_dict = {'author_records': author_list}
-    return render(request, 'base/authors.html', context=authors_dict)
 
-# Define the 'index' view function
+def display_authors(request):
+    context = {}
+
+    # Get the minimum and maximum IDs of ebooks in the database
+    min_id = Ebook.objects.all().order_by('id').first().id
+    max_id = Ebook.objects.all().order_by('-id').first().id
+
+    if min_id is not None and max_id is not None:
+        # Generate a random book ID within the range [min_id, max_id]
+        random_book_id = random.randint(min_id, max_id)
+
+        try:
+            # Try to fetch the ebook with the generated random ID
+            random_ebook = Ebook.objects.get(pk=random_book_id)
+        except Ebook.DoesNotExist:
+            # Handle the case where the random ID doesn't exist
+            raise Http404("Random book does not exist.")
+
+        # Build the URL for the random book profile page
+        random_book_profile_url = reverse('base:book_profile', args=[random_book_id])
+
+        # Redirect to the random book profile page
+        return redirect(random_book_profile_url)
+    else:
+        # Handle the case where there are not enough books
+        raise Http404("Not enough books to generate a random page.")
 def index(request):
     # Get a list of authors and ebooks ordered by 'name' and 'id' respectively
     author_list = Author.objects.order_by('name')
     ebook_list = Ebook.objects.order_by('id')
     items_dict = {'book_records': ebook_list, 'author_records': author_list}
     return render(request, 'base/index.html', context=items_dict)
+
+def book_profile(request, bookid):
+    book_info = Ebook.objects.get(id=bookid)
+    info_dict = {'book_info':book_info,'random':random.randint(0,500)}
+    return render(request, 'base/book_profile.html',context=info_dict)
+
+def random_book_profile(request, bookid):
+    book_info = Ebook.objects.get(id=bookid)
+    info_dict = {'book_info':book_info,'random':random.randint(0,500)}
+    return render(request, 'base/book_profile.html',context=info_dict)
+
