@@ -1,0 +1,95 @@
+/* styles.css */
+
+/* Global styles */
+body {
+    background-color: #008080; /* Teal background */
+    font-family: 'Tahoma', sans-serif; /* Windows XP-like font */
+}
+
+.navbar {
+    background-color: #008080; /* Teal navbar */
+    color: #fff;
+}
+
+.navbar-brand {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff; /* White text */
+    text-shadow: 2px 2px #000; /* Text shadow */
+}
+
+.navbar-toggler-icon {
+    background-color: #fff;
+}
+
+.navbar-link {
+    margin-left: 10px;
+    color: #fff; /* White text */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #00bfff; /* Light blue on hover */
+}
+
+.form-control {
+    width: 300px;
+    background-color: #fff; /* White input background */
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 5px;
+}
+
+/* Animation for floating book */
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.floating-book {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Additional styling for special buttons */
+.special-button {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 10px;
+    border-radius: 15px;
+    padding: 10px 20px;
+}
+
+.special-button.btn-primary {
+    background-color: #00bfff; /* Light blue button */
+    border-color: #00bfff;
+    color: #000000; /* White text */
+    text-shadow: none; /* Remove text shadow */
+    transition: background-color 0.3s;
+}
+
+.special-button.btn-primary:hover {
+    background-color: #0080ff; /* Darker blue on hover */
+    border-color: #0080ff;
+}
+
+/* Heartbeat and shake animation for navbar brand */
+@keyframes heartbeat {
+    0%, 100% { transform: scale(0.7); }
+    
+    50% { transform: scale(1); }
+}
+
+.navbar-brand {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px #000;
+    animation: heartbeat 7s infinite; /* Apply both animations */
+}
