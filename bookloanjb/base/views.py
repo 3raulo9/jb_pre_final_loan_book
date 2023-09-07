@@ -8,11 +8,10 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 import random
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,  get_object_or_404
 from django.http import Http404
 from base.models import Ebook
-
-
+from base.models import Author
 
 
 # Define the 'index' view function
@@ -103,9 +102,20 @@ def display_books(request):
     books_dict = {'book_records': ebook_list}
     return render(request, 'base/ebooks.html', context=books_dict)
 
-# Define the 'display_authors' view function
+def author_detail(request, author_id):
+    author = get_object_or_404(Author, pk=author_id)
+    # Optionally, you can fetch the list of books associated with this author here
+    # books = author.books.all()
+    return render(request, 'base/author_profile.html', {'author': author})
+
 
 def display_authors(request):
+    # Retrieve all authors and their related books
+    author_list = Author.objects.all().prefetch_related('books')
+    authors_dict = {'author_records': author_list}
+    return render(request, 'base/authors.html', context=authors_dict)
+
+def random_authors(request):
     context = {}
 
     # Get the minimum and maximum IDs of ebooks in the database

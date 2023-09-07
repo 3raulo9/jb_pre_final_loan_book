@@ -16,8 +16,8 @@ class UserProfileInfo(models.Model):
 
 # Author model to store information about authors
 class Author(models.Model):
-
-    name = models.CharField(max_length=64)  # Author's name
+    name = models.CharField(max_length=100)
+    books = models.ManyToManyField('Ebook', related_name='authors')
     birth_year = models.IntegerField()  # Author's birth year
     nationality = models.CharField(max_length=64)  # Author's nationality
 
