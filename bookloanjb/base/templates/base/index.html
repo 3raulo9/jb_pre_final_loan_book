@@ -1,8 +1,53 @@
 {% extends "base/base.html" %}
 {% block body_block %}
-<div>
-    <h1>pago</h1>
-</div>
+<link rel="stylesheet" href="{'css/styles.css' %}">
 
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <header>
+                    <h1 class="display-3">📚 LibraryPyBookManager 📚</h1>
+                    <p class="lead">Discover a World of Books and Authors</p>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <section class="book-section">
+                    <h2 class="text-warning">📖 Explore Our Collection of Books 📖</h2>
+                    {% if book_records %}
+                        <ul class="book-list">
+                            {% for book in book_records %}
+                                <li class="book-item floating-book"> <!-- Added 'floating-book' class for animation -->
+                                    <strong>{{ book.name }}</strong>
+                                    <p class="text-muted">by {{ book.author }}</p>
+                                    <p class="text-success">Published: {{ book.year_published }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                    <p class="text-danger">No ebooks in the database</p>
+                    {% endif %}
+                </section>
+            </div>
+            <div class="col-md-6">
+                <section class="author-section">
+                    <h2 class="text-danger">🖋️ Meet Our Quirky Authors 🖋️</h2>
+                    {% if author_records %}
+                        <ul class="author-list">
+                            {% for author in author_records %}
+                                <li class="author-item">
+                                    <strong>{{ author.name }}</strong>
+                                    <p class="text-info">Born: {{ author.birth_year }}</p>
+                                    <p class="text-primary">Nationality: {{ author.nationality }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                    <p class="text-danger">No authors in the database</p>
+                    {% endif %}
+                </section>
+            </div>
+        </div>
+    </div>
 {% endblock %}

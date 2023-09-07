@@ -1,0 +1,16 @@
+/* styles.css */
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px); /* Adjust the value to control the float height */
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.floating-book {
+    animation: float 3s ease-in-out infinite; /* Adjust the duration and timing as needed */
+}

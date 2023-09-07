@@ -1,11 +1,18 @@
 # Import necessary modules from Django
 from django.shortcuts import render
 from base.forms import UserForm, UserProfileInfoForm
+from base.models import Author, Ebook, Loan, Review
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 # Define the 'index' view function
-def index(request):
-    # Render the 'index.html' template
-    return render(request, 'base/index.html')
+@login_required
+def user_logout(request):
+    # Logout the user and redirect to the 'index' page
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
 
 # Define the 'register' view function
 def register(request):
@@ -60,3 +67,45 @@ def register(request):
         'profile_form': profile_form,
         'registered': registered
     })
+
+# Define the 'user_login' view function
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            # Log in the user and redirect to the 'index' page
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            # Render the login page with an error message
+            error_message = "Incorrect username or password"
+            return render(request, 'base/login.html', {'error': error_message})
+    else:
+        # Render the login page
+        return render(request, 'base/login.html', {})
+
+# Define the 'display_books' view function
+def display_books(request):
+    # Get a list of ebooks ordered by 'id'
+    ebook_list = Ebook.objects.order_by('id')
+    books_dict = {'book_records': ebook_list}
+    return render(request, 'base/ebooks.html', context=books_dict)
+
+# Define the 'display_authors' view function
+def display_authors(request):
+    # Get a list of authors ordered by 'name'
+    author_list = Author.objects.order_by('name')
+    authors_dict = {'author_records': author_list}
+    return render(request, 'base/authors.html', context=authors_dict)
+
+# Define the 'index' view function
+def index(request):
+    # Get a list of authors and ebooks ordered by 'name' and 'id' respectively
+    author_list = Author.objects.order_by('name')
+    ebook_list = Ebook.objects.order_by('id')
+    items_dict = {'book_records': ebook_list, 'author_records': author_list}
+    return render(request, 'base/index.html', context=items_dict)
