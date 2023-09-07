@@ -1,16 +1,72 @@
-/* styles.css */
-@keyframes float {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px); /* Adjust the value to control the float height */
-    }
-    100% {
-        transform: translateY(0);
-    }
+a {
+    text-decoration: none;
+    color: black;
 }
 
-.floating-book {
-    animation: float 3s ease-in-out infinite; /* Adjust the duration and timing as needed */
+table, th, td {
+    border: 3px solid black;
+    border-collapse: separate;
+    overflow-x: auto;
 }
+
+.background-table {
+    background-image: url("../images/light-soft-color-blue-low-poly-background.png");
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    text-align: center;
+  }
+
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+        }
+
+        .navbar-toggler-icon {
+            background-color: #fff;
+        }
+
+        .navbar-link {
+            margin-left: 10px;
+        }
+
+        .nav-link {
+            color: #fff;
+        }
+
+        .form-control {
+            width: 300px;
+        }
+
+        .btn-outline-success {
+            color: #28a745;
+            border-color: #28a745;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px); /* Adjust the value to control the float height */
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        
+        .floating-book {
+            animation: float 3s ease-in-out infinite; /* Adjust the duration and timing as needed */
+        }
+        

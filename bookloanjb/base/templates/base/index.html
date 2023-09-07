@@ -1,6 +1,5 @@
 {% extends "base/base.html" %}
 {% block body_block %}
-<link rel="stylesheet" href="{'css/styles.css' %}">
 
     <div class="container-fluid">
         <div class="row">
@@ -18,7 +17,7 @@
                     {% if book_records %}
                         <ul class="book-list">
                             {% for book in book_records %}
-                                <li class="book-item floating-book"> <!-- Added 'floating-book' class for animation -->
+                                <li class="book-item floating-book">
                                     <strong>{{ book.name }}</strong>
                                     <p class="text-muted">by {{ book.author }}</p>
                                     <p class="text-success">Published: {{ book.year_published }}</p>
@@ -26,7 +25,7 @@
                             {% endfor %}
                         </ul>
                     {% else %}
-                    <p class="text-danger">No ebooks in the database</p>
+                    <p class="text-danger">No ebooks are currently in the database</p>
                     {% endif %}
                 </section>
             </div>
@@ -44,7 +43,7 @@
                             {% endfor %}
                         </ul>
                     {% else %}
-                    <p class="text-danger">No authors in the database</p>
+                    <p class="text-danger">No authors are currently in the database</p>
                     {% endif %}
                 </section>
             </div>

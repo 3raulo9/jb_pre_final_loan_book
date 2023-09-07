@@ -12,16 +12,13 @@
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-
 </head>
-
+<body>
     <nav class="navbar navbar-expand-lg bg-muted">
         <div class="container-fluid ml-auto">
             <a class="navbar-brand" href="{% url 'index' %}">
-                    LibraryPyBookManager
+                LibraryPyBookManager
             </a>
-            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -37,13 +34,13 @@
                         {% endif %}
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'base:display_books' %}">Books</a>
+                        <a class="special-button btn btn-primary" href="{% url 'base:display_books' %}">Books</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'base:display_authors' %}">Authors</a>
+                        <a class="special-button btn btn-warning" href="{% url 'base:display_authors' %}">Authors</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'base:register' %}">Register</a>
+                        <a class="special-button btn btn-info" href="{% url 'base:register' %}">Register</a>
                     </li>
                 </ul>
                 <!-- search bar -->
@@ -54,12 +51,9 @@
             </div>
         </div>
     </nav>
-
     <div>
         {% block body_block %}
         {% endblock %}
     </div>
-
 </body>
-
 </html>
