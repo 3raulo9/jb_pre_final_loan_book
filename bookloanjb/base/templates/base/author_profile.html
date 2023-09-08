@@ -1,12 +1,34 @@
 {% extends 'base/base.html' %}
+
 {% block body_block %}
-    <div class="center">
-        <h2>{{ author.name }} Details</h2>
-        <p><b>Birth Year:</b> {{ author.birth_year }}</p>
-        <p><b>Nationality:</b> {{ author.nationality }}</p>
-        <!-- Optionally, you can list the books associated with this author here -->
-        <!-- {% for book in author.books.all %}
-            <p><b>Book:</b> {{ book.title }}</p>
-        {% endfor %} -->
+
+{% load static %}
+
+<div class="center" style="border: 3px solid black; max-width: 450px;">
+    <div class="row" style="border: 3px solid black;">
+        <div class="col-sm-6 col-md-8">
+            <h4>{{author_info.name}}</h4>
+        </div>
     </div>
+    <div style="max-height: 400px;overflow:auto;">
+        The books that have been published by {{author_info.name}}
+        <table>
+            <thead>
+                <th>Title</th>
+                <th>The year of publishing</th>
+            </thead>
+            <tbody>
+                {% for book in book_info %}
+                    <tr>
+                        <td><a href="{% url 'base:book_profile' bookname=book.name %}">{{ book.name }}</a>
+
+                        </td>
+                        <td>{{book.year_published}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 {% endblock %}

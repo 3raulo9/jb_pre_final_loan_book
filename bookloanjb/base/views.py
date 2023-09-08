@@ -8,11 +8,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 import random
-from django.shortcuts import render, redirect,  get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
-from base.models import Ebook
-from base.models import Author
-
 
 # Define the 'index' view function
 @login_required
@@ -97,27 +94,39 @@ def user_login(request):
 
 # Define the 'display_books' view function
 def display_books(request):
-    # Get a list of ebooks ordered by 'id'
-    ebook_list = Ebook.objects.order_by('id')
-    books_dict = {'book_records': ebook_list}
-    return render(request, 'base/ebooks.html', context=books_dict)
+    if request.method == "POST":
+        search = request.POST.get('searched')
+        ebook_list = Ebook.objects.filter(name__contains=search)
+        books_dict = {'book_records':ebook_list}
+        return render(request,'base/ebooks.html',context=books_dict)
+    elif request.method == "GET":
+        ebook_list = Ebook.objects.order_by('id')
+        books_dict = {'book_records':ebook_list}
+        return render(request,'base/ebooks.html',context=books_dict)
 
+# Define the 'author_detail' view function
 def author_detail(request, author_id):
     author = get_object_or_404(Author, pk=author_id)
     # Optionally, you can fetch the list of books associated with this author here
     # books = author.books.all()
     return render(request, 'base/author_profile.html', {'author': author})
 
+# Define the 'author_profile' view function
+def author_profile(request, authorname):
+    author_info = Author.objects.get(name=authorname)
+    book_info = Ebook.objects.filter(author=author_info.id)
+    info_dict = {'author_info': author_info, 'book_info': book_info}
+    return render(request, 'base/author_profile.html', context=info_dict)
 
+# Define the 'display_authors' view function
 def display_authors(request):
     # Retrieve all authors and their related books
     author_list = Author.objects.all().prefetch_related('books')
     authors_dict = {'author_records': author_list}
     return render(request, 'base/authors.html', context=authors_dict)
 
+# Define the 'random_authors' view function
 def random_authors(request):
-    context = {}
-
     # Get the minimum and maximum IDs of ebooks in the database
     min_id = Ebook.objects.all().order_by('id').first().id
     max_id = Ebook.objects.all().order_by('-id').first().id
@@ -133,14 +142,16 @@ def random_authors(request):
             # Handle the case where the random ID doesn't exist
             raise Http404("Random book does not exist.")
 
-        # Build the URL for the random book profile page
-        random_book_profile_url = reverse('base:book_profile', args=[random_book_id])
+        # Build the URL for the random book profile page using the book's name
+        random_book_profile_url = reverse('base:book_profile', args=[random_ebook.name])
 
         # Redirect to the random book profile page
         return redirect(random_book_profile_url)
     else:
         # Handle the case where there are not enough books
         raise Http404("Not enough books to generate a random page.")
+
+# Define the 'index' view function
 def index(request):
     # Get a list of authors and ebooks ordered by 'name' and 'id' respectively
     author_list = Author.objects.order_by('name')
@@ -148,13 +159,41 @@ def index(request):
     items_dict = {'book_records': ebook_list, 'author_records': author_list}
     return render(request, 'base/index.html', context=items_dict)
 
-def book_profile(request, bookid):
-    book_info = Ebook.objects.get(id=bookid)
-    info_dict = {'book_info':book_info,'random':random.randint(0,500)}
-    return render(request, 'base/book_profile.html',context=info_dict)
+# Define the 'book_profile' view function
+def book_profile(request, bookname):
+    if request.method == "POST":
+        review_text = request.POST.get('reviewtext')
+        rating = request.POST.get('inlineRadioOptions')
+        if review_text and rating:
+            try:
+                book_info = Ebook.objects.get(name=bookname)
+                review_instance = Review.objects.create(
+                    user=request.user,
+                    ebook=book_info,
+                    rating=rating,
+                    text_field=review_text
+                )
+                review_instance.save()
+                print("Review saved")
+                return HttpResponseRedirect(reverse('base:book_profile', args=[bookname]))
+            except Ebook.DoesNotExist:
+                print("Error: Book not found")
+        else:
+            print("Error: Review not saved, missing data")
 
+    # Retrieve book information
+    try:
+        book_info = Ebook.objects.get(name=bookname)
+        info_dict = {'book_info': book_info, 'random': random.randint(0, 300)}
+        return render(request, 'base/book_profile.html', context=info_dict)
+    except Ebook.DoesNotExist:
+        raise Http404("Book not found")
+
+# Define the 'random_book_profile' view function
 def random_book_profile(request, bookid):
-    book_info = Ebook.objects.get(id=bookid)
-    info_dict = {'book_info':book_info,'random':random.randint(0,500)}
-    return render(request, 'base/book_profile.html',context=info_dict)
-
+    try:
+        book_info = Ebook.objects.get(id=bookid)
+        info_dict = {'book_info': book_info, 'random': random.randint(0, 500)}
+        return render(request, 'base/book_profile.html', context=info_dict)
+    except Ebook.DoesNotExist:
+        raise Http404("Book not found")

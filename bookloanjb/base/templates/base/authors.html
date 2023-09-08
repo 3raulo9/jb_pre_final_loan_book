@@ -11,7 +11,7 @@
                 <tbody>
                 {% for author in author_records %}
                     <tr>
-                        <td><b>{{ author.name }}</b></td>
+                        <td><b><a href="{% url 'base:author_profile' author.name %}">{{ author.name }}</a></b></td>
                         <td><b>{{ author.birth_year }}</b></td>
                         <td><b>{{ author.nationality }}</b></td>
                     </tr>
@@ -19,7 +19,7 @@
                 </tbody>
             </table>
         {% else %}
-        <p>no authors in database</p>
+        <p>No authors are currently in the database</p>
         {% endif %}
     </div>
 

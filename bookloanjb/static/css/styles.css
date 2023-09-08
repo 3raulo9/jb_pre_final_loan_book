@@ -1,9 +1,176 @@
-/* styles.css */
-
 /* Global styles */
+html {
+    height: 100%;
+}
+
 body {
+    min-height: 100%;
+    font-family: sans-serif;
+    padding: 0px;
+    padding-bottom: 60px;
     background-color: #97d9d9; /* Teal background */
-    font-family: 'Tahoma', sans-serif; /* Windows XP-like font */
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+
+
+
+.background-table {
+    background-image: url("../images/seamless-abstract-repeatable-vector.png");
+}
+
+#bg {
+    background-image: linear-gradient(to bottom right, #2b5876, #4e4376);
+    height: 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.links:hover {
+    color: gray;
+    background-color: transparent;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+
+.book-display {
+    margin-left: 50px;
+    border-width: 1em;
+}
+
+small {
+    display: block;
+    line-height: 1.428571429;
+    color: #999;
+}
+
+.content-item {
+    padding: 5px 0;
+}
+
+.content-item.grey {
+    padding: 50px 0;
+    height: 100%;
+}
+
+.content-item h2 {
+    font-weight: 700;
+    font-size: 35px;
+    line-height: 45px;
+    text-transform: uppercase;
+    margin: 20px 0;
+}
+
+.content-item h3 {
+    font-weight: 400;
+    font-size: 20px;
+    color: #555555;
+    margin: 10px 0 15px;
+    padding: 0;
+}
+
+.content-headline {
+    height: 1px;
+    text-align: center;
+    margin: 20px 0 70px;
+}
+
+.content-headline h2 {
+    display: inline-block;
+    margin: -20px auto 0;
+    padding: 0 20px;
+}
+
+.content-headline h3 {
+    font-size: 14px;
+    color: #AAAAAA;
+    display: block;
+}
+
+#comments form {
+    margin-bottom: 30px;
+}
+
+#comments .btn {
+    margin-top: 7px;
+}
+
+#comments form fieldset {
+    clear: both;
+}
+
+#comments form textarea {
+    height: 100px;
+}
+
+#comments .media {
+    border-top: 1px dashed black;
+    padding: 20px 0;
+    margin: 0;
+}
+
+#comments .media>.pull-left {
+    margin-right: 20px;
+}
+
+#comments .media img {
+    max-width: 100px;
+}
+
+#comments .media h4 {
+    margin: 0 0 10px;
+}
+
+#comments .media h4 span {
+    font-size: 14px;
+    float: right;
+    color: #999999;
+}
+
+#comments .media p {
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+#comments .media-detail {
+    margin: 0;
+}
+
+#comments .media-detail li {
+    color: #AAAAAA;
+    font-size: 12px;
+    padding-right: 10px;
+    font-weight: 600;
+}
+
+#comments .media-detail a:hover {
+    text-decoration: underline;
+}
+
+#comments .media-detail li:last-child {
+    padding-right: 0;
+}
+
+#comments .media-detail li i {
+    color: #666666;
+    font-size: 15px;
+    margin-right: 10px;
+}
+
+.card-container .round {
+    border: 1px solid #03BFCB;
+    border-radius: 50%;
+    padding: 7px;
 }
 
 .navbar {
@@ -11,13 +178,7 @@ body {
     color: #fff;
 }
 
-.navbar-brand {
-    font-size: 28px;
-    font-weight: bold;
-    color: #fff; /* White text */
-    text-shadow: 2px 2px #000; /* Text shadow */
-    animation: heartbeat 7s infinite; /* Heartbeat animation for navbar brand */
-}
+
 
 .navbar-toggler-icon {
     background-color: #fff;
@@ -41,20 +202,6 @@ body {
     border-radius: 3px;
 }
 
-/* Animation for floating book */
-@keyframes float {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-    100% {
-        transform: translateY(0);
-    }
-}
-
-
 /* Additional styling for special buttons */
 .special-button {
     font-weight: bold;
@@ -76,10 +223,32 @@ body {
     background-color: #0080ff; /* Darker blue on hover */
     border-color: #0080ff;
 }
+.navbar-brand {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff; /* White text */
+    text-shadow: 2px 2px #000; /* Text shadow */
+    animation: heartbeat 6s linear infinite; /* Initial heartbeat animation with alternating lean */
+    transform-origin: center; /* Set the transform origin to the center for rotation */
+}
 
-/* Heartbeat animation for navbar brand */
 @keyframes heartbeat {
-    0%, 100% { transform: scale(0.7); }
+    0%, 100% { transform: scale(0.7) rotate(0deg); }
     
-    50% { transform: scale(1); }
+    25% { transform: scale(1) rotate(5deg); }
+    50% { transform: scale(0.7) rotate(0deg); }
+    75% { transform: scale(1) rotate(-5deg); }
+}
+
+.navbar-brand.reverse {
+    animation: reverse-heartbeat 6s linear infinite; /* Reverse heartbeat animation with alternating lean */
+    animation-delay: 3s; /* Delay the reverse animation by half of the total animation duration */
+}
+
+@keyframes reverse-heartbeat {
+    0%, 100% { transform: scale(0.7) rotate(0deg); }
+    
+    25% { transform: scale(1) rotate(-5deg); }
+    50% { transform: scale(0.7) rotate(0deg); }
+    75% { transform: scale(1) rotate(5deg); }
 }
