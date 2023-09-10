@@ -2,13 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.conf import settings
+import datetime
 
 # UserProfileInfo model to store additional user information
 class UserProfileInfo(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one relationship with User model
-    country_of_residence = models.CharField(max_length=256, blank=True)  # User's country of residence
-    profile_pic = models.ImageField(upload_to='profile_pics', blank=True)  # User's profile picture
+
 
     def __str__(self):
         return self.user.username
@@ -77,4 +77,6 @@ class Review(models.Model):
                                     MinValueValidator(1)
                                         ])  # Rating for the ebook (1 to 5)
     text_field = models.CharField(max_length=500)  # Text field for the review
+    date = models.DateField(default=datetime.date.today)
+
 

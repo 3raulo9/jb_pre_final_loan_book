@@ -1,10 +1,11 @@
 {% extends "base/base.html" %}
 {% block body_block %}
-    <div class="container-fluid">
+    <div class="container-fluid" style="border-style: inset;">
         <div class="row">
-            <div class="col-md-12 text-center">
+            <div class="col-md-12 text-center" style="border-style: inset;">
                 <header>
                     <h1 class="display-3">📚 LibraryPyBookManager 📚</h1>
+                    
                     <p class="lead text-primary">Discover a World of Books and Authors</p>
                 </header>
             </div>
@@ -31,6 +32,8 @@
             <div class="col-md-6">
                 <section class="author-section">
                     <h2>🖋️ Meet Our Quirky Authors 🖋️</h2>
+                    <div class="col" style="max-height: 700px;overflow:auto;">
+
                     {% if author_records %}
                         <ul class="author-list">
                             {% for author in author_records %}

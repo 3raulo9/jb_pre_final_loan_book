@@ -16,12 +16,25 @@ a {
     color: black;
 }
 
-
-
-
-.background-table {
-    background-image: url("../images/seamless-abstract-repeatable-vector.png");
+/* Rainbow text animation */
+.rainbow-text {
+    background: linear-gradient(45deg, violet, indigo, blue, green, yellow, orange, red);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbow 5s linear infinite;
 }
+
+@keyframes rainbow {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+
 
 #bg {
     background-image: linear-gradient(to bottom right, #2b5876, #4e4376);

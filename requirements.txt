@@ -9,3 +9,5 @@ pycparser==2.21
 sqlparse==0.4.4
 tzdata==2023.3
 Faker==15.3
+python-decouple==3.6
+validators

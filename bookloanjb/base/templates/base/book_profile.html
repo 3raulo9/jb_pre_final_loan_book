@@ -20,9 +20,23 @@
         {% endif %}</p>
     {% endif %}
     <br>
+    <p><h4><a href="#reviews" >{{reviews_amount}}  Reviews</a></h4></p>
+
     <div style="max-width: 1000px;background-color: rgb(255, 255, 255,.5);">
         {{book_info.ebook_content}}
     </div>
+    <div class="row" id="reviews">
+        <div class="col">
+            filter by:
+            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name %}#reviews ">all</a>
+            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name 1 %}#reviews ">🔥 1</a>
+            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name 2 %}#reviews ">🔥 2</a>
+            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name 3 %}#reviews ">🔥 3</a>
+            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name 4 %}#reviews ">🔥 4</a>
+            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name 5 %}#reviews ">🔥 5</a>
+        </div>
+    </div>
+    </form>
     <br>
     <section class="content-item" id="comments">
         <div class="book-display">   
@@ -36,7 +50,8 @@
                             <div class="row">
 
                                 <div class="form-group col-xs-12 col-sm-9 col-lg-10">
-                                    <textarea class="form-control" id="message" placeholder="Your review" required="" name="reviewtext"></textarea>
+                                    {{review_form.text_field}}
+
                                     <label class="radio-inline">
                                         Rating: &nbsp;
                                         <div class="form-check form-check-inline">
@@ -67,20 +82,27 @@
                         <button type="submit" class="btn btn-success">Submit</button>
                     </form>
                     
-                    <h3>56 Reviews</h3>
+                    <h3>{{reviews_amount}} Reviews</h3>
                     
-                    <div class="media">
-                        <div class="media-body">
-                            <h4 class="media-heading">Someone</h4>
-                            <ul class="list-unstyled list-inline media-detail pull-left">
-                            </ul>
-                            <ul class="list-unstyled list-inline media-detail pull-right">
-                                <li class=""><a href="">Subscribe</a></li>
-                                <li class=""><a href="">Like</a></li>
-                                <li class=""><a href="">Reply</a></li>
-                            </ul>
+                    {% for text in reviews %}
+                        <div class="media">
+                            <div class="d-flex flex-row">
+                                <div class="col">
+                                    <div class="media-body">
+                                        <h4 class="media-heading">{{text.user}}</h4>
+                                        <div>
+                                            ⭐{{text.rating}}
+                                        </div>
+                                        <p>{{text.text_field}}</p>
+                                        <ul class="list-unstyled list-inline media-detail pull-left">
+                                            <li><i class="fa fa-calendar"></i>{{text.date}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

@@ -5,19 +5,17 @@
         {% if book_records %}
             <table class="table border-dark table-hover background-table">
                 <thead>
-                    <th scope="col"><h5>Name</h5></th>
+                    <th scope="col"><h5>Title</h5></th>
                     <th scope="col"><h5>Author</h5></th>
                     <th scope="col"><h5>Year published</h5></th>
                 </thead>
                 <tbody>
                 {% for book in book_records %}
-                    <tr>
-                        <td><b><a href="{% url 'base:book_profile' bookname=book.name %}">{{ book.name }}</a>
-
-                        </b></td>
-                        <td><b>{{ book.author }}</b></td>
-                        <td><b>{{ book.year_published }}</b></td>
-                    </tr>
+                <tr>
+                    <td><b><a href="{% url 'base:book_profile' book.name %}">{{ book.name }}</a></b></td>
+                    <td><b><a href="{% url 'base:author_profile' book.author %}">{{ book.author }}</a></b></td>
+                    <td><b>{{ book.year_published }}</b></td>
+                </tr>
                 {% endfor %}
                 </tbody>
             </table>
