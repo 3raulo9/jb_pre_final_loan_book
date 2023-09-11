@@ -167,7 +167,10 @@ def book_profile(request, bookname, ratefilter=False):
         reviews = Review.objects.filter(ebook=book_info).order_by('-date')
 
     loaned = False
-    loans = Loan.objects.filter(user=request.user, ebook=book_info)
+    try:
+        loans = Loan.objects.filter(user=request.user,ebook=book_info)
+    except:
+        loans = []
     if len(loans) != 0:
         loans = loans[0]
         loaned = True
@@ -189,6 +192,7 @@ def random_book_profile(request, bookid):
 # Loaning book function
 @login_required
 def loan_book(request, bookname, loan_type):
+    
     if int(loan_type) == 2:
         loan_delete = datetime.date.today() + datetime.timedelta(days=7)
     elif int(loan_type) == 3:
@@ -200,3 +204,12 @@ def loan_book(request, bookname, loan_type):
                                loan_delete=loan_delete)
     bookname = bookname.replace(' ', '%20')
     return redirect(f"/library/book_profile/{bookname}/")
+
+@login_required
+def user_profile(request):
+
+    user_info = request.user
+    user_loans = Loan.objects.filter(user=user_info)
+    user_reviews = Review.objects.filter(user=user_info)
+    user_dict = {'userinfo':user_info,'userloans':user_loans,'userreviews':user_reviews}
+    return render(request, 'base/user_profile.html',context=user_dict)

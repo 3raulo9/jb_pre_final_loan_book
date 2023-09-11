@@ -13,7 +13,7 @@ class UserForm(forms.ModelForm):
 
     class Meta():
         model = User  # Use the User model
-        fields = ("username", "email", "password")
+        fields = ("username","password")
 
     def clean(self):
         # Clean and validate form data

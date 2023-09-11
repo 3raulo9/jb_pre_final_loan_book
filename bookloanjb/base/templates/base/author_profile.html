@@ -4,15 +4,17 @@
 
 {% load static %}
 
-<div class="center" style="border: 3px solid black; max-width: 450px;">
-    <div class="row" style="border: 3px solid black;">
+<div class="center ">
+    <table class="table border-dark table-hover background-table">
         <div class="col-sm-6 col-md-8">
             <h4>{{author_info.name}}</h4>
+            <small><cite>{{author_info.nationality}}</cite></small>
+            <small>Birthday: <cite>{{author_info.birth_year}}</cite></small>
         </div>
-    </div>
+    </table>
     <div style="max-height: 400px;overflow:auto;">
         The books that have been published by {{author_info.name}}
-        <table>
+        <table  class="table border-dark table-hover background-table">
             <thead>
                 <th>Title</th>
                 <th>The year of publishing</th>
