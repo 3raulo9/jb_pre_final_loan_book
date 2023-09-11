@@ -1,16 +1,15 @@
 # Import necessary modules from Django
 from random import randint
-from django.shortcuts import render
+import random
+import datetime
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from base.forms import UserForm, ReviewForm
 from base.models import Author, Ebook, Loan, Review
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
-import random
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404
-from django.db.models import Q
 
 # Define the 'index' view function
 @login_required
@@ -26,10 +25,10 @@ def register(request):
 
     # Check if the HTTP request method is POST
     if request.method == 'POST':
-        # Create UserForm and UserProfileInfoForm instances with data from the request
+        # Create UserForm instance with data from the request
         user_form = UserForm(data=request.POST)
 
-        # Check if both forms are valid
+        # Check if the form is valid
         if user_form.is_valid():
             # Save the user data from 'user_form'
             user = user_form.save()
@@ -40,22 +39,20 @@ def register(request):
 
             registered = True
 
-
-
         else:
             print(user_form.errors)
-            return render(request,'base/registration.html',
-                          {'user_form':user_form,
-                           'registered':registered,})
+            return render(request, 'base/registration.html',
+                          {'user_form': user_form,
+                           'registered': registered, })
 
     else:
-        # If the request method is not POST, create empty forms
+        # If the request method is not POST, create an empty form
         user_form = UserForm()
 
     # Render the 'registration.html' template with forms and registration status
-    return render(request,'base/registration.html',
-                          {'user_form':user_form,
-                           'registered':registered})
+    return render(request, 'base/registration.html',
+                  {'user_form': user_form,
+                   'registered': registered})
 
 # Define the 'user_login' view function
 def user_login(request):
@@ -82,12 +79,12 @@ def display_books(request):
     if request.method == "POST":
         search = request.POST.get('searched')
         ebook_list = Ebook.objects.filter(name__contains=search)
-        books_dict = {'book_records':ebook_list}
-        return render(request,'base/ebooks.html',context=books_dict)
+        books_dict = {'book_records': ebook_list}
+        return render(request, 'base/ebooks.html', context=books_dict)
     elif request.method == "GET":
         ebook_list = Ebook.objects.order_by('id')
-        books_dict = {'book_records':ebook_list}
-        return render(request,'base/ebooks.html',context=books_dict)
+        books_dict = {'book_records': ebook_list}
+        return render(request, 'base/ebooks.html', context=books_dict)
 
 # Define the 'author_detail' view function
 def author_detail(request, author_id):
@@ -108,13 +105,12 @@ def display_authors(request):
     if request.method == "POST":
         search = request.POST.get('searchedauthor')
         author_list = Author.objects.filter(name__contains=search)
-        authors_dict = {'author_records':author_list}
-        return render(request,'base/authors.html',context=authors_dict)
+        authors_dict = {'author_records': author_list}
+        return render(request, 'base/authors.html', context=authors_dict)
     elif request.method == "GET":
         author_list = Author.objects.order_by('name')
-        authors_dict = {'author_records':author_list}
-        return render(request,'base/authors.html',context=authors_dict)
-
+        authors_dict = {'author_records': author_list}
+        return render(request, 'base/authors.html', context=authors_dict)
 
 # Define the 'random_authors' view function
 def random_authors(request):
@@ -158,22 +154,28 @@ def book_profile(request, bookname, ratefilter=False):
         if review_form.is_valid():
             clean_text = review_form.cleaned_data['text_field']
             ebookdata = Ebook.objects.get(name=bookname)
-            Review.objects.create(user=request.user,ebook=ebookdata,rating=review_rate,text_field=clean_text)
-            print("review got saved")
+            Review.objects.create(user=request.user, ebook=ebookdata, rating=review_rate, text_field=clean_text)
+            print("review saved")
         else:
-            print("error: review was no saved")
+            print("error: review not saved")
 
     book_info = Ebook.objects.get(name=bookname)
 
     if ratefilter:
-        reviews = Review.objects.filter(rating=ratefilter,ebook=book_info)
+        reviews = Review.objects.filter(rating=ratefilter, ebook=book_info)
     else:
         reviews = Review.objects.filter(ebook=book_info).order_by('-date')
 
-    review_form = ReviewForm()
-    info_dict = {'book_info':book_info,'random':random.randint(0,300),"review_form":review_form,"reviews":reviews,"reviews_amount":len(reviews),}
-    return render(request, 'base/book_profile.html',context=info_dict)
+    loaned = False
+    loans = Loan.objects.filter(user=request.user, ebook=book_info)
+    if len(loans) != 0:
+        loans = loans[0]
+        loaned = True
 
+    review_form = ReviewForm()
+    info_dict = {'book_info': book_info, 'random': random.randint(0, 300), "review_form": review_form,
+                 "reviews": reviews, "reviews_amount": len(reviews), "loaned": loaned, "loans": loans}
+    return render(request, 'base/book_profile.html', context=info_dict)
 
 # Define the 'random_book_profile' view function
 def random_book_profile(request, bookid):
@@ -183,3 +185,18 @@ def random_book_profile(request, bookid):
         return render(request, 'base/book_profile.html', context=info_dict)
     except Ebook.DoesNotExist:
         raise Http404("Book not found")
+
+# Loaning book function
+@login_required
+def loan_book(request, bookname, loan_type):
+    if int(loan_type) == 2:
+        loan_delete = datetime.date.today() + datetime.timedelta(days=7)
+    elif int(loan_type) == 3:
+        loan_delete = datetime.date.today() + datetime.timedelta(days=3)
+    else:
+        loan_delete = datetime.date.today() + datetime.timedelta(days=14)
+    ebookdata = Ebook.objects.get(name=bookname)
+    Loan.objects.get_or_create(user=request.user, ebook=ebookdata, loan_date=datetime.date.today(),
+                               loan_delete=loan_delete)
+    bookname = bookname.replace(' ', '%20')
+    return redirect(f"/library/book_profile/{bookname}/")

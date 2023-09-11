@@ -1,27 +1,32 @@
 {% extends 'base/base.html' %}
 
 {% block body_block %}
-    <div class="center">
-        {% if book_records %}
-            <table class="table border-dark table-hover background-table">
-                <thead>
-                    <th scope="col"><h5>Title</h5></th>
-                    <th scope="col"><h5>Author</h5></th>
-                    <th scope="col"><h5>Year published</h5></th>
-                </thead>
-                <tbody>
-                {% for book in book_records %}
-                <tr>
-                    <td><b><a href="{% url 'base:book_profile' book.name %}">{{ book.name }}</a></b></td>
-                    <td><b><a href="{% url 'base:author_profile' book.author %}">{{ book.author }}</a></b></td>
-                    <td><b>{{ book.year_published }}</b></td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-        <p>No ebooks are currently in the database</p>
-        {% endif %}
+    <div class="center" >
+        <div>
+            <h1>Books</h1>
+        </div>
+        <div style="max-height: 700px;overflow:auto;">
+            {% if book_records %}
+                <table class="table border-dark table-hover background-table">
+                    <thead>
+                        <th scope="col"><h5>Title</h5></th>
+                        <th scope="col"><h5>Author</h5></th>
+                        <th scope="col"><h5>The year published</h5></th>
+                    </thead>
+                    <tbody>
+                    {% for book in book_records %}
+                        <tr>
+                            <td><b><a href="{% url 'base:book_profile' book.name %}">{{ book.name }}</a></b></td>
+                            <td><b><a href="{% url 'base:author_profile' book.author %}">{{ book.author }}</a></b></td>
+                            <td><b>{{ book.year_published }}</b></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+            <p>There are no ebooks currently in the database</p>
+            {% endif %}
+        </div>
     </div>
 
 {% endblock %}

@@ -1,44 +1,27 @@
-
-
 {% extends 'base/base.html' %}
 {% block body_block %}
 
 <div class="jumbotron book-display">
-    <p><h1 class="fw-bolder mb-1">{{book_info.name}}</h1></p>
-    <!-- add link to author -->
-    <p><h5 class="text-secondary">by<a href="{% url 'base:author_profile' book_info.author %}" class="text-secondary"> {{book_info.author}}</a></h5></p>
+    <h1 class="fw-bolder mb-1">{{book_info.name}}</h1>
+    <p class="text-secondary">by <a href="{% url 'base:author_profile' book_info.author %}" class="text-secondary">{{book_info.author}}</a></p>
     <p class="text-secondary">published: {{book_info.year_published}}</p>
     <br>
     {% if user.is_authenticated %}
-        <p><a class="navbar-link btn btn-danger" href="" role="button">Save</a>
-        {% if book_info.loan_type == 3 %}
-            can be saved for up to 2 days
-        {% elif book_info.loan_type == 2 %}
-            can be saved for up to 5 days
+        {% if loaned %}
+            <p class="badge bg-secondary" style="--bs-text-opacity: .5;">Book saved in your library until: {{loans.loan_delete}}</p>
         {% else %}
-            can be saved for up to 10 days
-        {% endif %}</p>
+            <p><a class="btn btn-danger" href="{% url 'base:loan_book' book_info.name book_info.loan_type %}" role="button">Save</a>
+            {% if book_info.loan_type == 3 %}
+                Can be saved for up to 2 days
+            {% elif book_info.loan_type == 2 %}
+                Can be saved for up to 5 days
+            {% else %}
+                Can be saved for up to 10 days
+            {% endif %}</p>
+        {% endif %}
     {% endif %}
-    <br>
-    <p><h4><a href="#reviews" >{{reviews_amount}}  Reviews</a></h4></p>
-
-    <div style="max-width: 1000px;background-color: rgb(255, 255, 255,.5);">
-        {{book_info.ebook_content}}
-    </div>
-    <div class="row" id="reviews">
-        <div class="col">
-            filter by:
-            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name %}#reviews ">all</a>
-            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name 1 %}#reviews ">🔥 1</a>
-            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name 2 %}#reviews ">🔥 2</a>
-            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name 3 %}#reviews ">🔥 3</a>
-            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name 4 %}#reviews ">🔥 4</a>
-            <a class="btn btn-outline-secondary" href="{% url 'base:book_profile' book_info.name 5 %}#reviews ">🔥 5</a>
-        </div>
-    </div>
-    </form>
-    <br>
-    <section class="content-item" id="comments">
+    <h4><a href="#reviews">{{reviews_amount}} Reviews</a></h4>
+    <div class="content-item" id="comments">
         <div class="book-display">   
             <div class="row">
                 <div class="col-sm-8">   
@@ -48,35 +31,32 @@
                         
                         <fieldset>
                             <div class="row">
-
                                 <div class="form-group col-xs-12 col-sm-9 col-lg-10">
                                     {{review_form.text_field}}
-
-                                    <label class="radio-inline">
-                                        Rating: &nbsp;
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" required>
-                                            <label class="form-check-label" for="inlineRadio1">1</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
-                                            <label class="form-check-label" for="inlineRadio2">2</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="3">
-                                            <label class="form-check-label" for="inlineRadio1">3</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="4">
-                                            <label class="form-check-label" for="inlineRadio2">4</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="5">
-                                            <label class="form-check-label" for="inlineRadio2">5</label>
-                                        </div><br>
-                                    </label>
                                 </div>
-                                
+                                <div class="form-group col-xs-12 col-sm-3 col-lg-2">
+                                    <label class="radio-inline">Rating:</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" required>
+                                        <label class="form-check-label" for="inlineRadio1">1</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
+                                        <label class="form-check-label" for="inlineRadio2">2</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3">
+                                        <label class="form-check-label" for="inlineRadio3">3</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="4">
+                                        <label class="form-check-label" for="inlineRadio4">4</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="5">
+                                        <label class="form-check-label" for="inlineRadio5">5</label>
+                                    </div>
+                                </div>
                             </div>  	
                         </fieldset>
                         <button type="submit" class="btn btn-success">Submit</button>
@@ -90,9 +70,7 @@
                                 <div class="col">
                                     <div class="media-body">
                                         <h4 class="media-heading">{{text.user}}</h4>
-                                        <div>
-                                            ⭐{{text.rating}}
-                                        </div>
+                                        <div>⭐{{text.rating}}</div>
                                         <p>{{text.text_field}}</p>
                                         <ul class="list-unstyled list-inline media-detail pull-left">
                                             <li><i class="fa fa-calendar"></i>{{text.date}}</li>
@@ -100,14 +78,12 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </div>
-
 
 {% endblock %}
