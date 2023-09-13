@@ -1,0 +1,93 @@
+{% extends 'base/base.html' %}
+{% block body_block %}
+
+<style>
+  .warning-container {
+    font-size: 150px;
+    text-align: center;
+  }
+
+  .letter {
+    display: inline-block;
+    position: relative;
+  }
+
+  .letter-left {
+    animation: moveLeft 2s linear infinite alternate;
+  }
+
+  .letter-right {
+    animation: moveRight 2s linear infinite alternate;
+  }
+
+  @keyframes moveLeft {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: -10px; /* Adjust the distance you want the letters to move left */
+    }
+  }
+
+  @keyframes moveRight {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: 10px; /* Adjust the distance you want the letters to move right */
+    }
+  }
+
+  .letter:nth-child(2n) {
+    animation-duration: 2.5s; /* Adjust the duration for even-numbered letters */
+  }
+
+  .letter:nth-child(3n) {
+    animation-duration: 3s; /* Adjust the duration for every third letter */
+  }
+
+  /* Faster Flashing Background Animation */
+  @keyframes flashColors {
+    0% {
+      background-color: red;
+    }
+    50% {
+      background-color: green;
+    }
+    100% {
+      background-color: red;
+    }
+  }
+
+  body {
+    animation: flashColors 2s linear infinite;
+  }
+</style>
+
+<div class="container">
+  <div>
+    <div class="warning-container">
+      <span class="letter letter-left">W</span>
+      <span class="letter letter-left">A</span>
+      <span class="letter letter-left">R</span>
+      <span class="letter letter-right">N</span>
+      <span class="letter letter-right">I</span>
+      <span class="letter letter-right">N</span>
+      <span class="letter letter-right">G</span>
+    </div>
+    <h3 class="text-center">you are about to delete your account<br>there is no way back.</h3>
+    <form action="{% url 'base:delete_user'%}" method="post">
+      {% csrf_token %}
+      <div class="row mt-auto">
+        <div class="col-6 d-grid gap-2">
+          <button type="submit" class="btn btn-info" name="button" value="abort">return</button>
+        </div>
+        <div class="col-6 d-grid gap-2">
+          <button type="submit" class="btn btn-danger" name="button" value="delete">proceed with the deletion.</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
