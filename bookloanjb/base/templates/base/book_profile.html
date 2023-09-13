@@ -6,11 +6,17 @@
     <p class="text-secondary">by <a href="{% url 'base:author_profile' book_info.author %}" class="text-secondary">{{book_info.author}}</a></p>
     <p class="text-secondary">published: {{book_info.year_published}}</p>
     <br>
+    {% if user.is_staff %}
+    <hr>
+    <a class="btn btn-info" href="{% url 'base:update_book' book_info.id %}">edit book</a> |
+    <a href="{% url 'base:delete_book' book_info.id %}" class="btn btn-danger">delete</a>
+    <hr>
+    {% endif %}
     {% if user.is_authenticated %}
         {% if loaned %}
             <p class="badge bg-secondary" style="--bs-text-opacity: .5;">Book saved in your library until: {{loans.loan_delete}}</p>
-        {% else %}
-            <p><a class="btn btn-danger" href="{% url 'base:loan_book' book_info.name book_info.loan_type %}" role="button">Save</a>
+        {% else %
+            <p><a class="btn btn-success" href="{% url 'base:loan_book' book_info.name book_info.loan_type %}" role="button">Save</a>
             {% if book_info.loan_type == 3 %}
                 Can be saved for up to 2 days
             {% elif book_info.loan_type == 2 %}

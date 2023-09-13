@@ -8,8 +8,9 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from base.forms import UserForm, ReviewForm
+from base.forms import UserForm, ReviewForm,  EbookForm
 from base.models import Author, Ebook, Loan, Review
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Define the 'index' view function
 @login_required
@@ -231,6 +232,8 @@ def user_profile(request):
 
     if request.method == 'POST':
         user_form = UserForm(data=request.POST, instance=user_info)
+        
+        # Check if the user form is valid.
         if user_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
@@ -286,3 +289,52 @@ def delete_user(request):
             user.delete()
             return redirect('index')
     return render(request, 'base/user_delete.html')
+
+@staff_member_required
+def add_book(request):
+    added = False
+    add_isnt_valid = False
+    
+    # Check if the request method is POST (usually for form submissions).
+    if request.method == 'POST':
+        ebook_form = EbookForm(data=request.POST)
+        
+        # Check if the form is valid.
+        if ebook_form.is_valid():
+            ebook_form.save()  # Save the ebook data.
+            added = True  # Set added flag to True.
+        else:
+            add_isnt_valid = True  # Form is not valid.
+    
+    ebook_form = EbookForm()  # Create a new empty form.
+    
+    # Render the 'add_book.html' template with the ebook_form and flags.
+    return render(request, 'base/add_book.html', {'ebook_form': ebook_form, 'add_isnt_valid': add_isnt_valid, "added": added, 'update': False})
+
+@staff_member_required
+def update_book(request, book_id):
+    updt_isnt_valid = False
+    
+    # Get the Ebook object with the given book_id.
+    book = Ebook.objects.get(id=book_id)
+    
+    # Check if the request method is POST (usually for form submissions).
+    if request.method == 'POST':
+        ebook_form = EbookForm(request.POST, instance=book)
+        
+        # Check if the form is valid.
+        if ebook_form.is_valid():
+            ebook_form.save()  # Save the updated ebook data.
+            return redirect(f'/library/book_profile/{book.name}')  # Redirect to the book profile page.
+        else:
+            updt_isnt_valid = True  # Form is not valid.
+    
+    ebook_form = EbookForm()  # Create a new empty form.
+    
+    # Render the 'add_book.html' template with the ebook_form, book, and flags.
+    return render(request, 'base/add_book.html', {'ebook_form': ebook_form, 'updt_isnt_valid': updt_isnt_valid, 'update': True, 'book': book})
+
+@staff_member_required
+def delete_book(request, book_id):
+    Ebook.objects.filter(id=book_id).delete()  # Delete the ebook with the given book_id.
+    return redirect('index')  # Redirect to the index page.

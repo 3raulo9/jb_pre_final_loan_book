@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core import validators
-from base.models import Review
+from base.models import Review, Ebook, Author
 
 # User forms
 class UserForm(forms.ModelForm):
@@ -37,3 +37,23 @@ class ReviewForm(forms.ModelForm):
     class Meta():
         model = Review
         fields = ("text_field",)
+
+
+class EbookForm(forms.ModelForm):
+    CHOICES = [
+        ( 1, '10 days'),
+        ( 2, '5 days'),
+        ( 3, '2 days')
+    ]
+    loan_type = forms.ChoiceField(
+        widget=forms.RadioSelect,
+        choices=CHOICES, 
+    )
+    ebook_content = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control',
+                                                 'id':'message',
+                                                 'placeholder':'text area',
+                                                 'required':'false',
+                                                 'style':'width: 80%',}))
+    class Meta():
+        model = Ebook
+        fields = '__all__'

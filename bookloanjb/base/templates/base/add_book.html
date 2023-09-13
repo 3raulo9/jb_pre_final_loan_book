@@ -1,0 +1,77 @@
+{% extends 'base/base.html' %}
+{% block body_block %}
+<div class="container-fluid">
+    {% if update %}
+    <div class="row">
+    {% endif %}
+
+    {% if update %}
+    <div class="col-6">
+        <p><h5 class="text-secondary">published: {{book.year_published}}</h5></p>
+        <p><h1 class="fw-bolder mb-1">{{book.name}}</h1></p>
+        <p><h5 class="text-secondary">by <a href="{% url 'base:author_profile' book.author %}" class="text-secondary"> {{book.author}}</a></h5></p>
+        <div style="max-width: 1000px; background-color: rgb(255, 255, 255, .5);">
+            {{book.ebook_content}}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="col-6">
+        <div class="jumbotron">
+            {% if added %}
+                <h1>Book has been added</h1>
+            {% else %}
+                {% if add_isnt_valid %}
+                    <h4 class="badge bg-secondary">The book you tried to enter didn't go through</h4>
+                {% elif updt_isnt_valid %}
+                    <h4 class="badge bg-secondary">Nothing's changed</h4>
+                {% endif %}
+                {% if update %}
+                    <form action="{% url 'base:update_book' book.id %}" method="post">
+                        <h2 style="animation: glow 1s infinite alternate;">Here you can change the details of the selected book!</h2>
+                {% else %}
+                    <form action="{% url 'base:add_book'%}" method="post">
+                        <h2 style="animation: glow 1s infinite alternate;">Add a new book</h2>
+                {% endif %}
+                {% csrf_token %}
+                <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Title:</label>
+                    <div class="col-sm-10" style="animation: glow 1s infinite alternate;">
+                        {{ ebook_form.name }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Author:</label>
+                    <div class="col-sm-10" style="animation: glow 1s infinite alternate;">
+                        {{ ebook_form.author }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Year Published:</label>
+                    <div class="col-sm-10" style="animation: glow 1s infinite alternate;">
+                        {{ ebook_form.year_published }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Loan Duration:</label>
+                    <div class="col-sm-10" style="animation: glow 1s infinite alternate;">
+                        {{ ebook_form.loan_type }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Book Content:</label>
+                    <div class="col-sm-10" style="animation: glow 1s infinite alternate;">
+                        {{ ebook_form.ebook_content }}
+                    </div>
+                </div>
+                {% if update %}
+                    <input type="submit" value="Update">
+                {% else %}
+                    <input type="submit" value="Publish">
+                {% endif %}
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
