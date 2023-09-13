@@ -13,19 +13,21 @@
     <hr>
     {% endif %}
     {% if user.is_authenticated %}
-        {% if loaned %}
-            <p class="badge bg-secondary" style="--bs-text-opacity: .5;">Book saved in your library until: {{loans.loan_delete}}</p>
-        {% else %
-            <p><a class="btn btn-success" href="{% url 'base:loan_book' book_info.name book_info.loan_type %}" role="button">Save</a>
-            {% if book_info.loan_type == 3 %}
-                Can be saved for up to 2 days
-            {% elif book_info.loan_type == 2 %}
-                Can be saved for up to 5 days
-            {% else %}
-                Can be saved for up to 10 days
-            {% endif %}</p>
-        {% endif %}
+    {% if loaned %}
+        <p class="badge bg-secondary" style="--bs-text-opacity: .5;">Book saved in your library until: {{loans.loan_delete}}</p>
+    {% else %}
+        <p><a class="btn btn-success" href="{% url 'base:loan_book' book_info.name book_info.loan_type %}" role="button">Save</a>
+        {% if book_info.loan_type == 3 %}
+            Can be saved for up to 2 days
+        {% elif book_info.loan_type == 2 %}
+            Can be saved for up to 5 days
+        {% else %}
+            Can be saved for up to 10 days
+        {% endif %}</p>
     {% endif %}
+{% endif %}
+
+
     <h4><a href="#reviews">{{reviews_amount}} Reviews</a></h4>
     <div class="content-item" id="comments">
         <div class="book-display">   
