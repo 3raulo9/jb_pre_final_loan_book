@@ -19,8 +19,8 @@
                             {% for book in book_records %}
                                 <li class="book-item floating-book">
                                     <strong class="text-success">{{ book.name }}</strong>
-                                    <p class="text-warning">by {{ book.author }}</p>
-                                    <p class="text-info">Published: {{ book.year_published }}</p>
+                                    <p class="text-danger">by {{ book.author }}</p>
+                                    <p class="text-primary">Published: {{ book.year_published }}</p>
                                 </li>
                             {% endfor %}
                         </ul>
@@ -38,7 +38,7 @@
                         <ul class="author-list">
                             {% for author in author_records %}
                                 <li class="author-item">
-                                    <strong class="text-warning">{{ author.name }}</strong>
+                                    <strong class="text-success">{{ author.name }}</strong>
                                     <p class="text-danger">Born: {{ author.birth_year }}</p>
                                     <p class="text-primary">Nationality: {{ author.nationality }}</p>
                                 </li>
