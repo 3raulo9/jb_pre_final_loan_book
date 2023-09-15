@@ -1,3 +1,6 @@
+
+![T_2_Q_0498313961__D7_AA_D7_9E_D7_95_D7_A0_D7_944](https://github.com/3raulo9/jb_pre_final_loan_book/assets/123974722/0ebfba12-9d78-460d-b1ad-98c94c50d1c3)
+
 # jb_pre_final_loan_book
 
 Loan book john brice project
