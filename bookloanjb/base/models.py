@@ -16,12 +16,13 @@ class UserProfileInfo(models.Model):
 # Author model to store information about authors
 class Author(models.Model):
     name = models.CharField(max_length=100)
-    books = models.ManyToManyField('Ebook', related_name='authors')
+    books = models.ManyToManyField('Ebook', related_name='authors', blank=True) 
     birth_year = models.IntegerField()  # Author's birth year
     nationality = models.CharField(max_length=64)  # Author's nationality
 
     def __str__(self):
         return self.name
+
 
 
 # Ebook model to store information about ebooks

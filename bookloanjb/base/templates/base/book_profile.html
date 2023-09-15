@@ -1,12 +1,16 @@
 {% extends 'base/base.html' %}
+
 {% block body_block %}
 
 <div class="jumbotron book-display">
     <h1 class="fw-bolder mb-1">{{book_info.name}}</h1>
     <p class="text-secondary">by <a href="{% url 'base:author_profile' book_info.author %}" class="text-secondary">{{book_info.author}}</a></p>
     <p class="text-secondary">published: {{book_info.year_published}}</p>
-    <br>
+    {{book_info.ebook_content}}
+    
+    <br>            
     {% if user.is_staff %}
+    
     <hr>
     <a class="btn btn-info" href="{% url 'base:update_book' book_info.id %}">edit book</a> |
     <a href="{% url 'base:delete_book' book_info.id %}" class="btn btn-danger">delete</a>
