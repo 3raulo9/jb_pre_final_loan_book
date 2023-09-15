@@ -2,7 +2,7 @@
 
 Loan book john brice project
 
-download the project = from my github page = https://github.com/3raulo9/jb_pre_final_loan_book.git
+download the project = from my github page = [https://github.com/3raulo9/jb_pre_final_loan_book.git](https://github.com/3raulo9/jb_pre_final_loan_book/archive/refs/heads/main.zip)
 
 
 in terminal open the project and create a virtual environment = 
