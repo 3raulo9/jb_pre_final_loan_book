@@ -1,55 +1,202 @@
 {% extends "base/base.html" %}
 {% block body_block %}
-    <div class="container-fluid" style="border-style: inset;">
-        <div class="row">
-            <div class="col-md-12 text-center" style="border-style: inset;">
-                <header>
-                    <h1 class="display-3">📚 LibraryPyBookManager 📚</h1>
-                    
-                    <p class="lead text-primary">Discover a World of Books and Authors</p>
-                </header>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <section class="book-section">
-                    <h2>📖 Explore Our Collection of Books 📖</h2>
-                    {% if book_records %}
-                        <ul class="book-list">
-                            {% for book in book_records %}
-                                <li class="book-item floating-book">
-                                    <strong class="text-success">{{ book.name }}</strong>
-                                    <p class="text-danger">by {{ book.author }}</p>
-                                    <p class="text-primary">Published: {{ book.year_published }}</p>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                    <p class="text-danger">No ebooks are currently in the database</p>
-                    {% endif %}
-                </section>
-            </div>
-            <div class="col-md-6">
-                <section class="author-section">
-                    <h2>🖋️ Meet Our Quirky Authors 🖋️</h2>
-                    <div class="col" style="max-height: 700px;overflow:auto;">
+<style>
+    .emoji-float {
+        display: inline-block;
+        position: relative;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+    }
 
-                    {% if author_records %}
-                        <ul class="author-list">
-                            {% for author in author_records %}
-                                <li class="author-item">
-                                    <strong class="text-success">{{ author.name }}</strong>
-                                    <p class="text-danger">Born: {{ author.birth_year }}</p>
-                                    <p class="text-primary">Nationality: {{ author.nationality }}</p>
-                                </li>
-                                
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                    <p class="text-danger">No authors are currently in the database</p>
-                    {% endif %}
-                </section>
-            </div>
+    .left-float {
+        animation-name: floatLeft;
+    }
+
+    .right-float {
+        animation-name: floatRight;
+    }
+
+    @keyframes floatLeft {
+        0%, 100% {
+            transform: translateX(0) translateY(0);
+        }
+        50% {
+            transform: translateX(-10px) translateY(-5px);
+        }
+    }
+
+    @keyframes floatRight {
+        0%, 100% {
+            transform: translateX(0) translateY(0);
+        }
+        50% {
+            transform: translateX(10px) translateY(-5px);
+        }
+    }
+
+    .shake-text {
+        animation: wave 2s infinite; /* Adjust the duration for a smoother wave */
+        display: inline-block;
+    }
+
+    @keyframes wave {
+        0% {
+            transform: translateY(0);
+        }
+        25% {
+            transform: translateY(-5px);
+        }
+        50% {
+            transform: translateY(0);
+        }
+        75% {
+            transform: translateY(5px);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+    /* Add individual delays for each letter */
+    .shake-text:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    .shake-text:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+    .shake-text:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+    .shake-text:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+    .shake-text:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+    .shake-text:nth-child(6) {
+        animation-delay: 0.6s;
+    }
+    .shake-text:nth-child(7) {
+        animation-delay: 0.7s;
+    }
+    .shake-text:nth-child(8) {
+        animation-delay: 0.8s;
+    }
+    .shake-text:nth-child(9) {
+        animation-delay: 0.9s;
+    }
+    .shake-text:nth-child(10) {
+        animation-delay: 1s;
+    }
+    .shake-text:nth-child(11) {
+        animation-delay: 1.1s;
+    }
+    .shake-text:nth-child(12) {
+        animation-delay: 1.2s;
+    }
+    .shake-text:nth-child(13) {
+        animation-delay: 1.3s;
+    }
+    .shake-text:nth-child(14) {
+        animation-delay: 1.4s;
+    }
+    .shake-text:nth-child(15) {
+        animation-delay: 1.5s;
+    }
+    .shake-text:nth-child(16) {
+        animation-delay: 1.6s;
+    }
+    .shake-text:nth-child(17) {
+        animation-delay: 1.7s;
+    }
+    .shake-text:nth-child(18) {
+        animation-delay: 1.8s;
+    }
+    .shake-text:nth-child(19) {
+        animation-delay: 1.9s;
+    }
+    .shake-text:nth-child(20) {
+        animation-delay: 2s;
+    }
+    .shake-text:nth-child(21) {
+        animation-delay: 2.1s;
+    }
+</style>
+<div class="container-fluid" style="border-style: inset;">
+    <div class="row">
+        <div class="col-md-12 text-center" style="border-style: inset;">
+            <header>
+                <br>
+                <h1 class="display-3">
+                    <span class="emoji-float left-float">📚</span>
+                    <span class="shake-text">L</span>
+                    <span class="shake-text">i</span>
+                    <span class="shake-text">b</span>
+                    <span class="shake-text">r</span>
+                    <span class="shake-text">a</span>
+                    <span class="shake-text">r</span>
+                    <span class="shake-text">y</span>
+                    <span class="shake-text">P</span>
+                    <span class="shake-text">y</span>
+                    <span class="shake-text">B</span>
+                    <span class="shake-text">o</span>
+                    <span class="shake-text">o</span>
+                    <span class="shake-text">k</span>
+                    <span class="shake-text">M</span>
+                    <span class="shake-text">a</span>
+                    <span class="shake-text">n</span>
+                    <span class="shake-text">a</span>
+                    <span class="shake-text">g</span>
+                    <span class="shake-text">e</span>
+                    <span class="shake-text">r</span>
+                    <span class="emoji-float right-float">📚</span>
+                </h1>
+                <br>
+                <p class="lead text-primary">Discover a World of Books and Authors</p>
+                <br>       
+            </header>
         </div>
     </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <section class="book-section">
+                <h2>📖 Explore Our Collection of Books 📖</h2>
+                {% if book_records %}
+                    <ul class="book-list">
+                        {% for book in book_records %}
+                            <li class="book-item floating-book">
+                                <strong class="text-success">{{ book.name }}</strong>
+                                <p class="text-danger">by {{ book.author }}</p>
+                                <p class="text-primary">Published: {{ book.year_published }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                <p class="text-danger">No ebooks are currently in the database</p>
+                {% endif %}
+            </section>
+        </div>
+        
+        <div class="col-md-6">
+            <section class="author-section">
+                <h2>🖋️ Meet Our Quirky Authors 🖋️</h2>
+                <div class="col" style="max-height: 700px;overflow:auto;">
+                {% if author_records %}
+                    <ul class="author-list">
+                        {% for author in author_records %}
+                            <li class="author-item">
+                                <strong class="text-success">{{ author.name }}</strong>
+                                <p class="text-danger">Born: {{ author.birth_year }}</p>
+                                <p class="text-primary">Nationality: {{ author.nationality }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                <p class="text-danger">No authors are currently in the database</p>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</div>
 {% endblock %}
